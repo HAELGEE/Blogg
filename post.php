@@ -128,6 +128,19 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
     }    
 }
 
+# Logik för att ta bort comments
+
+if($_SERVER['REQUEST_METHOD'] == "POST") {
+    if(isset($_POST['button_edit_button'])) {
+
+    }
+
+    if(isset($_POST['button_delete_button'])) {
+        
+    }
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -222,19 +235,28 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
     <?php foreach ($comments as $comment): ?>
         <div class="comment">
             <div class="editComment">
-                <div>            
+                <div class="buttons"></div>
+
+                <div class="mellan_button">
+                    <p style="margin-bottom: 0.5rem; margin-top: 0.3rem;"><strong>
+                        <a href="guest_profile.php?guest_id=<?= $comment['userID'] ?>" class="a_normal" >                     
+                            <?php echo htmlspecialchars($comment['username']);?>:
+                        </a>
+                    </strong></p>
                 </div>
 
-                <p style="margin-bottom: 0.5rem; margin-top: 0.3rem;"><strong>
-                    <a href="guest_profile.php?guest_id=<?= $comment['userID'] ?>" class="a_normal" >                     
-                        <?php echo htmlspecialchars($comment['username']);?>:
-                    </a>
-                </strong></p>
-                <div>
-                    <button>Edit</button>
-                    <button style="background-color: red; color: white;">Delete</button>
-                </div>
+                <?php if($INLOGGAD && $comment['userID'] == $_SESSION['user_id']): ?>
+                    <div class="buttons">
+                        <form method="POST" >
+                            <button class="buttons_button" name="button_edit_button">Edit</button>
+                            <button class="buttons_button" name="button_delete_button" style="background-color: red; color: white; margin-left: -0.5rem">Delete</button>
+                        </form>
+                    </div>
+                <?php else: ?>
+                    <div class="buttons"></div>
+                <?php endif ?>
             </div>
+
             <div class="comments-text">
                 <p style="color: white; "><?php echo nl2br(htmlspecialchars($comment['textInput'])); ?></p>
                 <p style="color: white; margin-top: 0.2rem;"><small><?php echo $comment['timeCreated']; ?></small></p>

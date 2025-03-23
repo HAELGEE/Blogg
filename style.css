@@ -183,8 +183,7 @@ button {
 
 .a_normal {
   text-decoration: underline;
-  color: whitesmoke;
-  
+  color: whitesmoke;  
 }
 
 .guest_profile__p {
@@ -1942,4 +1941,33 @@ header {
   flex-direction: row;
   justify-content: space-between;
 
+}
+
+.buttons {
+  display: flex;
+  width: 23%;
+  justify-content: flex-end;    
+}
+
+.buttons>form {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.mellan_button {
+  display: flex;
+  width: 54%;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttons_button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 0.8rem; 
+  width: 3.2rem;
+  margin-top: 0.2rem;
+  border-radius: 8px 8px 8px 8px;
 }
