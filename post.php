@@ -194,6 +194,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
     <form method="POST" class="commentsAndLike">        
         <h2 style="color: white; margin-top: 0.6rem; margin-bottom: 0.6rem;">Comments</h2>  
     
+        <!-- Denna är till för att visa Delete knappen för inlägget om man skapat inlägget -->
         <?php if($INLOGGAD && $post['userID'] == $_SESSION['user_id']): ?>
             <button name="delete_button" style="background-color: red; width: 8rem;">Delete</button>
         <?php endif ?>
@@ -215,14 +216,25 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
         </div>
     </form>
 </div>
+
+<!-- Här kommer koden för kommentarerna -->
 <?php if ($comments): ?>
     <?php foreach ($comments as $comment): ?>
         <div class="comment">
-            <p style="margin-bottom: 0.5rem; margin-top: 0.3rem;"><strong>
-                <a href="guest_profile.php?guest_id=<?= $comment['userID'] ?>" class="a_normal" >                     
-                    <?php echo htmlspecialchars($comment['username']);?>:
-                </a>
-            </strong></p>
+            <div class="editComment">
+                <div>            
+                </div>
+
+                <p style="margin-bottom: 0.5rem; margin-top: 0.3rem;"><strong>
+                    <a href="guest_profile.php?guest_id=<?= $comment['userID'] ?>" class="a_normal" >                     
+                        <?php echo htmlspecialchars($comment['username']);?>:
+                    </a>
+                </strong></p>
+                <div>
+                    <button>Edit</button>
+                    <button style="background-color: red; color: white;">Delete</button>
+                </div>
+            </div>
             <div class="comments-text">
                 <p style="color: white; "><?php echo nl2br(htmlspecialchars($comment['textInput'])); ?></p>
                 <p style="color: white; margin-top: 0.2rem;"><small><?php echo $comment['timeCreated']; ?></small></p>

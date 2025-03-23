@@ -43,6 +43,8 @@ body {
   align-items: center;
 }
 
+
+
 .container_inside {
   display: flex;
 
@@ -1932,4 +1934,12 @@ header {
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 5px;
+}
+
+.editComment {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+
 }
