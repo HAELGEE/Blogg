@@ -25,7 +25,7 @@ if (!$post) {
 
 
 # Den första If-satsen med !isset($_POST['likeButton']) är till för att få bort felmeddelande över header!
-if(!isset($_POST['likeButton']) && !isset($_POST['delete_button'])) {
+if(!isset($_POST['likeButton']) && !isset($_POST['delete_button']) && !isset($_POST['button_delete_button']) && !isset($_POST['button_edit_button'])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id']) && $_SESSION['user_id'] == $post['userID']) {
         $new_header = trim($_POST['header']);
         $new_text = trim($_POST['textInput']);
@@ -59,7 +59,7 @@ $stmt_post->execute(['post_id' => $pictureID]);
 $post2 = $stmt_post->fetch(PDO::FETCH_ASSOC);
 
 //Hämtar kommentarerna för valt inlägg
-$sql_comments = 'SELECT c.textInput, c.timeCreated, u.username, c.userID 
+$sql_comments = 'SELECT c.textInput, c.timeCreated, u.username, c.userID, c.id 
                  FROM Comments c
                  LEFT JOIN Users u ON c.userID = u.id
                  WHERE c.postID = :post_id
@@ -118,7 +118,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
         if(isset($_POST['ja'])) {
             $_SESSION['delete'] = $post['id']; 
             $_SESSION['pictureDelete'] = $post['imagePath'];
-            require 'delete_post.php'; 
+            require './Deletes/delete_post.php'; 
             header("Location: index.php");
             exit;
         }  elseif(isset($_POST['nej'])) {
@@ -129,14 +129,15 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 }
 
 # Logik för att ta bort comments
-
 if($_SERVER['REQUEST_METHOD'] == "POST") {
     if(isset($_POST['button_edit_button'])) {
 
     }
 
     if(isset($_POST['button_delete_button'])) {
-        
+        require './Deletes/delete_comment.php'; 
+        header("Location: post.php?id=$post_id");
+        exit;      
     }
 }
 
@@ -247,9 +248,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 
                 <?php if($INLOGGAD && $comment['userID'] == $_SESSION['user_id']): ?>
                     <div class="buttons">
-                        <form method="POST" >
+                        <form method="POST">
+                            <?php $_SESSION['commentID'] =  $comment['id']; ?> <!-- Skicka kommentarens ID -->
                             <button class="buttons_button" name="button_edit_button">Edit</button>
-                            <button class="buttons_button" name="button_delete_button" style="background-color: red; color: white; margin-left: -0.5rem">Delete</button>
+                            <button class="buttons_button" name="button_delete_button" style="background-color: red; color: white; margin-left: -0.5rem" value="<?php echo $comment['id']; ?>" >Delete</button>
                         </form>
                     </div>
                 <?php else: ?>
