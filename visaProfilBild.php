@@ -21,10 +21,6 @@ if($_SESSION['guest'] == true) {
 
         $base64Image = $result['image'];
 
-        // if($base64Image) {       
-        //     echo '<img style ="width: 300px; " src="data:image/*;base64,' . $base64Image . '" />';
-        // } 
-
         $_SESSION['guest'] == false;
 
     } catch (PDOException $e) {
@@ -50,10 +46,6 @@ if($_SESSION['guest'] == true) {
         if($base64Image) {       
             echo '<img style ="width: 300px; " src="data:image/*;base64,' . $base64Image . '" />';
         } 
-        /*else 
-        {
-            echo "<p style='color: red;'>Ingen bild hittades med detta ID.</p>";
-        }*/
     } catch (PDOException $e) {
         echo "<p style='color: red;'>Fel: " . $e->getMessage() . "</p";
     }

@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         <input type="file" name="image" id="image" accept="image/*" style="width: 13rem;">
                         <button type="submit" name="upload">Ladda upp!</button> 
                     <?php else: ?>
-                        <?php require_once 'visaBild.php'; ?>
+                        <?php require_once './Visa/visaBild.php'; ?>
                     <?php endif ?>   
 
                 </div>

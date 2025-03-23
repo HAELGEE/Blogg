@@ -17,7 +17,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// require_once 'db_connect.php';
 
 $user_id = $_SESSION['user_id'];
 $message = '';
@@ -130,12 +129,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $stmt->bindParam(":image", $base64Image, PDO::PARAM_STR);            
                 $stmt->bindValue(":id", $userID, PDO::PARAM_INT);
 
-                if($stmt->execute()) {
-                    echo "<p style='color: white;'>Bild uppladdad!</p>";
+                if($stmt->execute()) {                   
                     $_SESSION['check'] = true;
-                } else {
-                    echo "<p style='color: red;'>Fel vid uppladdning</p>";
-                }
+                    header("Location: profile.php");
+                } 
             } else {
                 echo "<p style='color: red;'>Ingen bild valdes att ladda upp!</p>";
                 header("Location: profile.php");
@@ -156,9 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $stmt->bindValue(":id", $userID, PDO::PARAM_INT);
 
             if($stmt->execute()) {
-                echo "<p style='color: white;'>Bild borttagen</p>";
             } else {
-                echo "<p style='color: red;'>Något gick fel!</p>";
             }
             
         
