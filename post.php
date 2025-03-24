@@ -389,8 +389,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
     </div>
     
     <script>        
-        document.getElementById('toggleEditForm').addEventListener('click', function () {
-        var editForm = document.getElementById('editForm');
+        document.getElementById('toggleEditForm2').addEventListener('click', function () {
+        var editForm = document.getElementById('editForm2');
         editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
         });    
     </script>
