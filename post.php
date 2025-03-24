@@ -23,13 +23,13 @@ if (!$post) {
     die("Post not found.");
 }
 
-$sql_post = 'SELECT p.id, p.userID, c.id, c.userID, c.postID, c.textInput
+$sql_post = 'SELECT p.userID, c.id, c.userID, c.postID, c.textInput
              FROM Comments c
              LEFT JOIN Posts p ON c.postID = p.id
              WHERE p.id = :post_id';
 $stmt_post = $pdo->prepare($sql_post);
 $stmt_post->execute(['post_id' => $post_id]);
-$post2 = $stmt_post->fetch(PDO::FETCH_ASSOC);
+$post2 = $stmt_post->fetchAll(PDO::FETCH_ASSOC);
 
 
 # Den första If-satsen med !isset($_POST['likeButton']) är till för att få bort felmeddelande över header!
@@ -151,13 +151,13 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 }
 
 # Logiken för att uppdatera en kommentar
-if($_SERVER['REQUEST_METHOD'] == "POST") {
-    if(isset($_POST['editComments'])) {
-        require_once './update/update_comments.php';
-        header("Location: post.php?id=$post_id");
-        exit;
-    }
-}
+// if($_SERVER['REQUEST_METHOD'] == "POST") {
+//     if(isset($_POST['editComments'])) {
+//         require_once './update/update_comments.php';
+//         header("Location: post.php?id=$post_id");
+//         exit;
+//     }
+// }
 
 ?>
 
@@ -229,8 +229,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
         <?php if($INLOGGAD && $post['userID'] == $_SESSION['user_id']): ?>
             <button name="delete_button" style="background-color: red; width: 8rem;">Delete</button>
         <?php endif ?>
-        <div class="commentsAndLike">
 
+        <div class="commentsAndLike">
             <?php if(!empty($_SESSION['user_id'])): ?>
                 <p style="color: white;"><?php echo "Likes: $counter" ?></p>
                 <button type="submit" name="likeButton" style="background-color: transparent;">       
@@ -267,7 +267,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
                     <div class="buttons">
                         <form method="POST">
                             <?php $_SESSION['commentID'] =  $comment['id']; ?> <!-- Skicka kommentarens ID -->
-                            <button class="buttons_button" name="button_edit_button" id="toggleEditForm2">Edit</button>
+                            <button id="toggleEditForm2" class="buttons_button" name="button_edit_button">Edit</button>
                             <button class="buttons_button" name="button_delete_button" style="background-color: red; color: white; margin-left: -0.5rem" value="<?php echo $comment['id']; ?>" >Delete</button>
                         </form>
                     </div>
@@ -352,38 +352,47 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
         <?php endif ?>
         
         
-        <script>
-    document.getElementById('toggleEditForm').addEventListener('click', function () {
+    <script>
+        document.getElementById('toggleEditForm').addEventListener('click', function () {
         var editForm = document.getElementById('editForm');
         editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
-    });
-</script>
+        });
+    </script>
 <?php endif; ?>
 
 <!-- Edit comments -->
 
-<?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $post['userID']): ?>
+<?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $post2['userID']): ?>
 
-        <div id="editForm2" class="edit-form" style="display: none; height: 30rem;">
-            <h2>Edit Comment</h2>
-            <?php if (!empty($error_message)): ?>
-                <p style="color: red;"> <?php echo $error_message; ?></p>
-            <?php endif; ?>
+    <div id="editForm2" class="edit-form" style="display: none; height: 30rem;">
+        <h2>Edit Comment</h2>
+        <?php if (!empty($error_message)): ?>
+            <p style="color: red;"> <?php echo $error_message; ?></p>
+        <?php endif; ?>
 
-            <form action="post.php?id=<?php echo $post_id; ?>" method="POST">               
+        <?php $checkID = "" ?>
 
-                <label for="textInput2">Text:</label>
-                <textarea id="textInput2" name="textInput2" rows="14" required><?php echo htmlspecialchars($post2['textInput']); ?></textarea>
+        <?php foreach($post2 as $array): ?>
+            <?php if($array['userID'] == $_SESSION['user_id']): ?>
+                <?php $checkID = $array['id'] ?>
+            <?php endif ?>
+        <?php endforeach ?>
 
-                <button type="submit" style="margin-top: 20px;" class="editComments">Update Post</button>
-            </form>
-        </div>
+
+        <form action="post.php?id=<?php echo $checkID; ?>" method="POST">               
+
+            <label for="textInput2">Text:</label>
+            <textarea id="textInput2" name="textInput2" rows="14" required><?php echo htmlspecialchars($post2['textInput']); ?></textarea>
+
+            <button type="submit" style="margin-top: 20px;" class="editComments">Update Comment</button>
+        </form>
     </div>
-    <script>
-        document.getElementById('toggleEditForm2').addEventListener('click', function () {
-            var editForm = document.getElementById('editForm2');
-            editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
-        });
+    
+    <script>        
+        document.getElementById('toggleEditForm').addEventListener('click', function () {
+        var editForm = document.getElementById('editForm');
+        editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
+        });    
     </script>
 <?php endif; ?>
 </main>

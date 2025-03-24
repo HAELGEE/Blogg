@@ -1042,7 +1042,9 @@ margin-bottom: 0.3rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 20vh;
+  height: 4rem;
+  width: 8rem;
+  justify-self: center;
   margin: 0;
 }
 

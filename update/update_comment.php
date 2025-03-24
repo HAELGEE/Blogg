@@ -14,9 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_update->execute([           
             'textInput' => $new_text,
             'post_id' => $post_id
-        ]);
-        header("Location: post.php?id=" . $post_id);
-        exit();
+        ]);        
     } else {
         $error_message = "Both fields must be filled.";
     }
